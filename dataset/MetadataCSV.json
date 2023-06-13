@@ -1,0 +1,29 @@
+{
+	"name": "MetadataCSV",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BlobConn",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "db.csv",
+				"folderPath": "abc",
+				"container": "sample01"
+			},
+			"columnDelimiter": ";",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

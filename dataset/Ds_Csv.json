@@ -1,0 +1,43 @@
+{
+	"name": "Ds_Csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BlobConn",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Par_fileName": {
+				"type": "string",
+				"defaultValue": "abc.csv"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().Par_fileName",
+					"type": "Expression"
+				},
+				"folderPath": "abc/datafiles",
+				"container": "sample01"
+			},
+			"columnDelimiter": ";",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "dept_id",
+				"type": "String"
+			},
+			{
+				"name": "dept_name",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

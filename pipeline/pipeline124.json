@@ -1,0 +1,182 @@
+{
+	"name": "pipeline124",
+	"properties": {
+		"activities": [
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(int(variables('Var2')),1)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Set variable False",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Var3",
+								"value": "False"
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Set variable True",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Var3",
+								"value": "True"
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Switch St",
+				"type": "Switch",
+				"dependsOn": [
+					{
+						"activity": "If Condition1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"on": {
+						"value": "@variables('Var2')",
+						"type": "Expression"
+					},
+					"cases": [
+						{
+							"value": "1",
+							"activities": [
+								{
+									"name": "Set variable 1",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Var3",
+										"value": "Case1"
+									}
+								}
+							]
+						},
+						{
+							"value": "2",
+							"activities": [
+								{
+									"name": "Set variable 2",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Var3",
+										"value": "Case2"
+									}
+								}
+							]
+						}
+					],
+					"defaultActivities": [
+						{
+							"name": "Set variable Default",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Var3",
+								"value": "Default"
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Filter Gt",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Switch St",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('var4')",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@greaterOrEquals(int(item()),5 )",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable Array",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Filter Gt",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var4",
+					"value": {
+						"value": "@activity('Filter Gt').output.value",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"Var1": {
+				"type": "Array"
+			},
+			"Var2": {
+				"type": "String",
+				"defaultValue": "2"
+			},
+			"Var3": {
+				"type": "String"
+			},
+			"var4": {
+				"type": "Array",
+				"defaultValue": [
+					1,
+					2,
+					5,
+					6,
+					7,
+					8,
+					9,
+					0,
+					3,
+					4
+				]
+			}
+		},
+		"folder": {
+			"name": "Activities"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-05-30T16:39:10Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

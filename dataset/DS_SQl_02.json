@@ -1,0 +1,33 @@
+{
+	"name": "DS_SQl_02",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Ls _SqlServer",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Par_db": {
+				"type": "string",
+				"defaultValue": "dbo"
+			},
+			"Par_tbl": {
+				"type": "string",
+				"defaultValue": "asvc"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().Par_db",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().Par_tbl",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

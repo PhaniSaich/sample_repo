@@ -1,0 +1,97 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup_Config Table",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "select  tablename from config_tbl",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "Sql_config",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Set variable error",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup_Config Table",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Var_error",
+					"value": {
+						"value": "@activity('Lookup_Config Table').Error.Details",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable Array",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup_Config Table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Var_lkp_output",
+					"value": {
+						"value": "@activity('Lookup_Config Table').output.value",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"Par_src_sql_db": {
+				"type": "string",
+				"defaultValue": "dbo"
+			},
+			"Par_src_sql_table": {
+				"type": "string",
+				"defaultValue": "table"
+			}
+		},
+		"variables": {
+			"Var_test": {
+				"type": "String"
+			},
+			"Var_error": {
+				"type": "String"
+			},
+			"Var_lkp_output": {
+				"type": "Array"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-05-25T01:53:45Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,222 @@
+{
+	"name": "pipeline124_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Metadata",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "Ds_Folder",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "Set variable Child Items",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var4",
+					"value": {
+						"value": "@activity('Get Metadata').output.childItems",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set Variable File Size",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Var3",
+					"value": {
+						"value": "@string(activity('Get Metadata File').output.columnCount)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Get Metadata File",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "MetadataCSV",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"exists",
+						"size",
+						"columnCount"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "Delete File",
+				"type": "Delete",
+				"dependsOn": [
+					{
+						"activity": "Set variable Child Items",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set Variable File Size",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "DeleteCSV",
+						"type": "DatasetReference"
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			},
+			{
+				"name": "Validation1",
+				"type": "Validation",
+				"dependsOn": [
+					{
+						"activity": "Delete File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "MetadataCSV",
+						"type": "DatasetReference"
+					},
+					"timeout": "0.12:00:00",
+					"sleep": 10,
+					"minimumSize": 10
+				}
+			},
+			{
+				"name": "Set Variable Validation Output",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Validation1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Var3",
+					"value": {
+						"value": "@string(activity('Validation1').output.size)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"Var1": {
+				"type": "Array"
+			},
+			"Var2": {
+				"type": "String",
+				"defaultValue": "2"
+			},
+			"Var3": {
+				"type": "String"
+			},
+			"var4": {
+				"type": "Array",
+				"defaultValue": [
+					1,
+					2,
+					5,
+					6,
+					7,
+					8,
+					9,
+					0,
+					3,
+					4
+				]
+			}
+		},
+		"folder": {
+			"name": "Activities"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-05-30T16:39:10Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

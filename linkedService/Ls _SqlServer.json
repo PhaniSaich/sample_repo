@@ -1,0 +1,28 @@
+{
+	"name": "Ls _SqlServer",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"parameters": {
+			"Par_secret": {
+				"type": "string",
+				"defaultValue": "abc"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault1",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "Par_abc"
+			}
+		},
+		"connectVia": {
+			"referenceName": "SHIR-01",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

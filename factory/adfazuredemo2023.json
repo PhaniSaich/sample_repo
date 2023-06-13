@@ -1,0 +1,9 @@
+{
+	"name": "adfazuredemo2023",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "0a301a9e-77e8-4baf-8d88-16c2ce564ea0",
+		"tenantId": "e57bc69a-79ae-4dd8-b572-6e5ca69ee0d5"
+	}
+}

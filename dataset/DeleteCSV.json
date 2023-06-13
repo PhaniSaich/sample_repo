@@ -1,0 +1,19 @@
+{
+	"name": "DeleteCSV",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BlobConn",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "db.csv",
+				"container": "sample01"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,36 @@
+{
+	"name": "master",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute Pipeline Csv to SQL",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "data_copy_master_sql",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Execute Pipeline CSV to CSV",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "data_copy_master_csv",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-05-26T17:56:01Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

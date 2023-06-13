@@ -1,0 +1,20 @@
+{
+	"name": "Sql_config",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Ls _SqlServer",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"Par_secret": "abc"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "config_tbl"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
