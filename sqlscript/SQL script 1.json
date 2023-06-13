@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 1",
+	"properties": {
+		"content": {
+			"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseParquetFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseParquetFormat] \n\tWITH ( FORMAT_TYPE = PARQUET)\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'sample01_storageazuredemo2023_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [sample01_storageazuredemo2023_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://sample01@storageazuredemo2023.dfs.core.windows.net' \n\t)\nGO\n\nCREATE EXTERNAL TABLE dbo.sample_parquet (\n\t[col1] nvarchar(4000),\n\t[col2] nvarchar(4000)\n\t)\n\tWITH (\n\tLOCATION = 'abc/datafiles/dbo.tbl1.parquet',\n\tDATA_SOURCE = [sample01_storageazuredemo2023_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseParquetFormat]\n\t)\nGO\n\n\nSELECT TOP 100 * FROM dbo.sample_parquet\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "external_db",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
