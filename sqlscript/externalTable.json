@@ -2,12 +2,12 @@
 	"name": "externalTable",
 	"properties": {
 		"content": {
-			"query": "",
+			"query": "\nCREATE EXTERNAL FILE FORMAT csv_custom\nWITH (  \n    FORMAT_TYPE = DELIMITEDTEXT,\n    FORMAT_OPTIONS ( FIELD_TERMINATOR = ';', STRING_DELIMITER = '\"', FIRST_ROW = 2   )\n);\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'sample01_storageazuredemo2023_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [sample01_storageazuredemo2023_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://sample01@storageazuredemo2023.dfs.core.windows.net' \n\t)\nGO\n\nCREATE EXTERNAL TABLE dbo.sample_csv (\n\t[c1] nvarchar(4000),\n\t[c2] nvarchar(4000),\n    [c3] nvarchar(4000)\n\t)\n\tWITH (\n\tLOCATION = 'abc/datafiles/abc.csv',\n\tDATA_SOURCE = [sample01_storageazuredemo2023_dfs_core_windows_net],\n\tFILE_FORMAT = csv_custom\n\t)\nGO\n\n\nSELECT TOP 100 * FROM dbo.sample_csv\nGO",
 			"metadata": {
 				"language": "sql"
 			},
 			"currentConnection": {
-				"databaseName": "master",
+				"databaseName": "external_db",
 				"poolName": "Built-in"
 			},
 			"resultLimit": 5000
