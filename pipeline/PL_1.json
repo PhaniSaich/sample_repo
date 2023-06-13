@@ -1,6 +1,40 @@
 {
 	"name": "PL_1",
 	"properties": {
+		"activities": [
+			{
+				"name": "Notebook1",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/ch.phani960tr@gmail.com/sampleNotebook",
+					"baseParameters": {
+						"return": {
+							"value": "@pipeline().parameters.Par_test",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureDatabricks_demo",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"Par_test": {
+				"type": "string",
+				"defaultValue": "Tessst_Parameter"
+			}
+		},
 		"annotations": []
 	}
 }
